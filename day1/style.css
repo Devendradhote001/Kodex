@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  color: white;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+nav {
+  display: flex;
+  padding: 0px 40px;
+  align-items: center;
+  justify-content: space-between;
+  height: 7%;
+  background-color: rgb(53, 53, 53);
+}
+
+nav > h1 {
+  font-size: 25px;
+}
+
+nav .links {
+  display: flex;
+  gap: 40px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.links p {
+  cursor: pointer;
+}
+
+.icon {
+  display: flex;
+  gap: 30px;
+  font-size: 20px;
+}
+
+section {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card {
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  height: fit-content;
+  flex-direction: column;
+  gap: 20px;
+  background-color: rgb(129, 129, 129);
+}
+
+.img {
+  height: 270px;
+}
+
+.img img {
+  height: 100%;
+  border-radius: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btns button {
+  padding: 10px 30px;
+  border-radius: 10px;
+  background-color: darkred;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btns button:nth-child(2) {
+  background-color: darkgreen;
+}
+
+.cart-screen {
+  top: 9%;
+  position: absolute;
+  display: none;
+  gap: 20px;
+  overflow-y: auto;
+  padding: 40px;
+  flex-wrap: wrap;
+  height: 95%;
+  width: 100%;
+  background-color: darkgrey;
+}
