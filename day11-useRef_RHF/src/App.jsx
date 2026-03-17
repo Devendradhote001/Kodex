@@ -1,41 +1,23 @@
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 
-const Optimized = () => {
-  let [formValues, setFormValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    mobile: "",
-  });
+const App = () => {
+  console.log("app rendering...");
 
-  let [arr, setArr] = useState([]);
-
-  let handleChange = (e) => {
-    let { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-
-  let handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("after onchange->", formValues);
-
-    setArr([...arr, formValues]);
-    console.log(arr);
-
-    setFormValues({
-      name: "",
-      email: "",
-      password: "",
-      mobile: "",
-    });
-  };
+  let inpRef = useRef({});
+  console.log(inpRef);
 
   return (
     <div className="h-screen flex flex-col gap-5 justify-center items-center">
       <h1>Create Account</h1>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(inpRef.current.name.value);
+          console.log(inpRef.current.email.value);
+          console.log(inpRef.current.password.value);
+          console.log(inpRef.current.mobile.value);
+        }}
         className="border flex flex-col gap-4 w-[400px] border-gray-600 p-5 rounded-2xl"
         action=""
       >
@@ -44,9 +26,10 @@ const Optimized = () => {
             Name
           </label>
           <input
-            value={formValues.name}
             name="name"
-            onChange={handleChange}
+            ref={(e) => {
+              inpRef.current.name = e;
+            }}
             className="bg-gray-300 p-2 rounded text-white"
             type="text"
             placeholder="John Doe"
@@ -57,9 +40,9 @@ const Optimized = () => {
             Email
           </label>
           <input
-            value={formValues.email}
-            name="email"
-            onChange={handleChange}
+            ref={(e) => {
+              inpRef.current.email = e;
+            }}
             className="bg-gray-300 p-2 rounded text-white"
             type="text"
             placeholder="john@xyz.com"
@@ -70,9 +53,10 @@ const Optimized = () => {
             Password
           </label>
           <input
-            value={formValues.password}
-            name="password"
-            onChange={handleChange}
+            ref={(e) => {
+              inpRef.current.password = e;
+            }}
+            name="Pss"
             className="bg-gray-300 p-2 rounded text-white"
             type="text"
             placeholder="12345678"
@@ -83,9 +67,9 @@ const Optimized = () => {
             Mobile
           </label>
           <input
-            value={formValues.mobile}
-            name="mobile"
-            onChange={handleChange}
+            ref={(e) => {
+              inpRef.current.mobile = e;
+            }}
             className="bg-gray-300 p-2 rounded text-white"
             type="number"
             placeholder="9579457347"
@@ -95,17 +79,8 @@ const Optimized = () => {
           Submit
         </button>
       </form>
-
-      <div>
-        <h1>User name</h1>
-        <div>
-          {arr.map((elem) => (
-            <h1>{elem.name}</h1>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };
 
-export default Optimized;
+export default App;
