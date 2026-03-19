@@ -30,7 +30,7 @@ const App = () => {
         onClick={() => {
           setObj({ ...obj, name: "Rohit", cat: 70 });
         }}
-      >
+      > 
         Change name
       </button>
 
