@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { nanoid } from "nanoid";
 
-const AddUserForm = ({ setUsers, setToggle, editUser, setEditUser }) => {
+const AddUserForm = ({ setUsers, setToggle, editUser, setEditUser, users }) => {
   console.log(editUser);
   let {
     register,
@@ -20,16 +20,19 @@ const AddUserForm = ({ setUsers, setToggle, editUser, setEditUser }) => {
     if (editUser) {
       //  here is update logic
       setUsers((prev) => {
-        return prev.map((val) => {
-          return val.id === editUser.id
-            ? { ...val, ...data }
-            : val;
+        let updatedUsers = prev.map((val) => {
+          return val.id === editUser.id ? { ...val, ...data } : val;
         });
+
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+        return updatedUsers;
       });
       setEditUser(null);
     } else {
       // this is for new user
-      setUsers((prev) => [...prev, { ...data, id: nanoid() }]);
+      let arr = [...users, { ...data, id: nanoid() }];
+      setUsers(arr);
+      localStorage.setItem("users", JSON.stringify(arr));
     }
     reset();
     setToggle(false);
