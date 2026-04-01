@@ -1,9 +1,11 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { CartStore } from "../context/CartContext";
 
 const Navbar = () => {
   let { cartLength } = useContext(CartStore);
+
+  let navigate = useNavigate();
 
   return (
     <div className="h-[10%] flex justify-between items-center">
@@ -28,7 +30,7 @@ const Navbar = () => {
           <span>{cartLength}</span>
         </NavLink>
       </div>
-      <div>Login</div>
+      <div onClick={() => navigate("/auth")}>Login</div>
     </div>
   );
 };
