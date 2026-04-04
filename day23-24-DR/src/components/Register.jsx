@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { Auth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 const Register = () => {
   let navigate = useNavigate();
 
-  let { setRegisteredUsers, registeredUsers } = useContext(Auth);
+  let { setRegisteredUsers, registeredUsers } = useAuth();
 
   let {
     register,

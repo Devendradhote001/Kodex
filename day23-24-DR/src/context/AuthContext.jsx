@@ -1,12 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
-export let Auth = createContext();
+let Auth = createContext();
 
 export let AuthProvider = ({ children }) => {
   const [registeredUsers, setRegisteredUsers] = useState(
     JSON.parse(localStorage.getItem("reg users")) || []
   );
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(
+    JSON.parse(localStorage.getItem("log user")) || null
+  );
 
   return (
     <Auth.Provider
@@ -21,3 +23,5 @@ export let AuthProvider = ({ children }) => {
     </Auth.Provider>
   );
 };
+
+export let useAuth = () => useContext(Auth);

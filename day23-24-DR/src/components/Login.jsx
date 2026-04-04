@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { Auth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 const Login = () => {
   let navigate = useNavigate();
 
-  let { registeredUsers, setLoggedInUser } = useContext(Auth);
+  let { registeredUsers, setLoggedInUser } = useAuth();
 
   let {
     register,
@@ -29,6 +29,7 @@ const Login = () => {
       return;
     }
     setLoggedInUser(user);
+    navigate("/dashboard");
     localStorage.setItem("log user", JSON.stringify(user));
     toast.success("User loggedIn");
     reset();
