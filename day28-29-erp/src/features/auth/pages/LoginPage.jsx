@@ -1,25 +1,10 @@
 import React from "react";
 import Input from "../../../shared/components/Input";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import Button from "../../../shared/components/Button";
+import { useAuth } from "../hooks/useAuth";
 
-const RegisterPage = () => {
-  let navigate = useNavigate();
-
-  let {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
-  let handleFormSubmit = (data) => {
-    console.log(data);
-    reset();
-  };
+const LoginPage = () => {
+  let { register, handleSubmit, handleLoginFormSubmit, navigate, errors } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center p-4 relative overflow-hidden">
@@ -61,7 +46,7 @@ const RegisterPage = () => {
         <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Administrator Registration
+              Administrator Login
             </h2>
             <p className="text-gray-600 text-sm">
               Secure access to the global employee framework.
@@ -69,22 +54,9 @@ const RegisterPage = () => {
           </div>
 
           <form
-            onSubmit={handleSubmit(handleFormSubmit)}
+            onSubmit={handleSubmit(handleLoginFormSubmit)}
             className="space-y-6 mb-5"
           >
-            {/* Name field */}
-            <Input
-              register={register}
-              name={"name"}
-              rules={{
-                required: "Name is required",
-              }}
-              placeholder={"Name"}
-              type={"text"}
-              label={"name"}
-              error={errors.name}
-            />
-
             {/* Email/Username Field */}
             <Input
               register={register}
@@ -116,16 +88,16 @@ const RegisterPage = () => {
             />
 
             {/* Login Button */}
-            <Button text={"Register as Admin"} />
+            <Button text={"Login as Admin"} />
           </form>
           <div>
             <p>
-              Already have an account?{" "}
+              Don't have an account?{" "}
               <span
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/register")}
                 className="text-blue-600 cursor-pointer"
               >
-                Login Here
+                Register Here
               </span>
             </p>
           </div>
@@ -150,4 +122,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
