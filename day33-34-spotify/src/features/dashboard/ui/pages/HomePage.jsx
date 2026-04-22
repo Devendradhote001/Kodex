@@ -1,7 +1,6 @@
 import React from "react";
 import { allSongs } from "../../api/songsApi";
 import SongCard from "../components/SongCard";
-import axios from "axios";
 import { axiosInstance } from "../../../../app/config/axiosInstance";
 
 const HomePage = () => {
@@ -9,7 +8,6 @@ const HomePage = () => {
   res.then((val) => console.log("from api->", val));
 
   let songs = allSongs();
-
 
   return (
     <div className="grid grid-cols-4 gap-4">
