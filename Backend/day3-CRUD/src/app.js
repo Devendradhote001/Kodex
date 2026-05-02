@@ -2,9 +2,6 @@
 // 2. configurations
 
 let express = require("express");
-const connectDb = require("./config/db");
-
-connectDb();
 
 let app = express();
 app.use(express.json());
