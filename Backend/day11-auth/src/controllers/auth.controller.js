@@ -1,39 +1,56 @@
 const UserModel = require("../models/user.model");
+const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 
 let registerController = async (req, res) => {
   try {
-    let { name, password, email, mobile } = req.body;
+    let { name, email, password, mobile } = req.body;
 
     if (!email || !password)
       return res.status(400).json({
         message: "All fields are required",
       });
 
-    let isExisted = await UserModel.findOne({ email });
+    let existingUser = await UserModel.findOne({ email });
 
-    if (isExisted)
+    if (existingUser)
       return res.status(409).json({
-        message: "Email already registered",
+        message: "user already registered",
       });
 
-    let newUser = await UserModel.create({
+    let newUser = await UserModel({
       name,
       email,
       password,
       mobile,
     });
 
-    let token = newUser.generateJWT();
+    let accessToken = generateAccessToken(newUser._id);
+    let refreshToken = generateRefreshToken(newUser._id);
 
-    res.cookie("token", token);
+    newUser.refreshToken = refreshToken;
+    await newUser.save();
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      // secure:true
+      // sameSite:"strict"
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      // secure:true
+      // sameSite:"strict"
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     return res.status(201).json({
-      message: "user registered successfully",
+      message: "User registered Successfully",
       user: newUser,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error",
+      message: "internal server error",
     });
   }
 };
@@ -47,36 +64,47 @@ let loginController = async (req, res) => {
         message: "All fields are required",
       });
 
-    let isExisted = await UserModel.findOne({ email });
+    let isExisted = await UserModel.findOne({
+      email,
+    });
 
     if (!isExisted)
       return res.status(404).json({
         message: "user not found",
       });
 
-    let comparePass = isExisted.comparePassword(password);
+    let accessToken = generateAccessToken(newUser._id);
+    let refreshToken = generateRefreshToken(newUser._id);
 
-    if (!comparePass)
-      return res.status(401).json({
-        message: "Invalid credentials",
-      });
+    isExisted.refreshToken = refreshToken;
+    await isExisted.save();
 
-    let token = isExisted.generateJWT();
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      // secure:true
+      // sameSite:"strict"
+      maxAge: 15 * 60 * 1000,
+    });
 
-    res.cookie("token", token);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      // secure:true
+      // sameSite:"strict"
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     return res.status(200).json({
-      message: "User loggedIn successfully",
-      user: isExisted,
+      message: "User LoggedIn Successfully",
+      user: newUser,
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error",
+      message: "internal server error",
     });
   }
 };
 
 module.exports = {
-  loginController,
   registerController,
+  loginController,
 };
