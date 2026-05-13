@@ -40,6 +40,8 @@ let loginService = async (data) => {
     email,
   });
 
+  // password verification
+
   if (!isExisted) throw new Error("user not found");
 
   let accessToken = generateAccessToken(isExisted._id);
