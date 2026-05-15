@@ -26,7 +26,8 @@ let authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(loginUser.rejected, (state) => {
-        (state.user = null), (state.isAuthenticated = false);
+        state.user = null;
+        state.isAuthenticated = false;
         state.isLoading = false;
       });
   },

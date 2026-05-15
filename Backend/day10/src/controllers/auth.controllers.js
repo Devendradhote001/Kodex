@@ -5,9 +5,9 @@ let bcrypt = require("bcrypt");
 
 let registerController = async (req, res) => {
   try {
-    let { name, email, mobile, password } = req.body;
+    let { name, email, password } = req.body;
 
-    if (!email || !mobile || !password)
+    if (!email || !password)
       return res.status(400).json({
         message: "All fields are required",
       });
@@ -26,7 +26,6 @@ let registerController = async (req, res) => {
     let newUser = await UserModel.create({
       name,
       email,
-      mobile,
       password: hasPass,
     });
 
@@ -34,7 +33,7 @@ let registerController = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.cookie("id_card", token);
+    res.cookie("token", token);
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -77,7 +76,12 @@ let loginController = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.cookie("id_card", token);
+    res.cookie("token", token, {
+      sameSite: "lax",
+      httpOnly: true,
+      secure: true,
+      maxAge: 60 * 60 * 1000,
+    });
 
     return res.status(200).json({
       message: "user loggedin successfully",

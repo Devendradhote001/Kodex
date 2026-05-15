@@ -17,13 +17,6 @@ let userSchema = new mongoose.Schema(
       required: [true, "password is required"],
       trim: true,
     },
-
-    mobile: {
-      type: String,
-      minlength: 10,
-      maxlength: 10,
-      required: [true, "mobile is required"],
-    },
   },
   {
     timestamps: true,
