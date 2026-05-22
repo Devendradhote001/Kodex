@@ -1,3 +1,4 @@
+const cacheInstance = require("../config/caching");
 const User = require("../models/user.model");
 const {
   registerService,
@@ -13,6 +14,8 @@ const registerController = async (req, res) => {
     const user = await registerService(req.body);
 
     const token = generateToken(user._id);
+
+    res.cookie("token", token);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -31,6 +34,8 @@ const loginController = async (req, res) => {
     const user = await loginService(req.body);
 
     const token = generateToken(user._id);
+
+    res.cookie("token", token);
 
     res.status(200).json({
       message: "Login successful",
@@ -111,10 +116,39 @@ const updatePasswordController = async (req, res) => {
   }
 };
 
+const logoutController = async (req, res) => {
+  try {
+    let token = req.cookies.token;
+
+    if (!token)
+      return res.status(404).json({
+        message: "token not found",
+      });
+
+    cacheInstance.set(token, "blacklisted");
+
+    // in case of acc and ref token
+    // await User.findById(req.user._id, {
+    //   refreshToken: null,
+    // });
+
+    res.clearCookie("token");
+
+    return res.status(200).json({
+      message: "User logged out",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   registerController,
   loginController,
   resetPasswordController,
   forgetPasswordController,
   updatePasswordController,
+  logoutController,
 };
